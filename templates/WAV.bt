@@ -1,0 +1,47 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: WAV.bt
+//   Authors: Alexandr Evdokimov
+//   Version: 0.01
+//   Purpose: Hitman Codename 47 WAV file
+//
+//   History: 
+//    
+//   2018.06 v 0.01 initial release 
+//
+//------------------------------------------------ 
+
+typedef enum <char> {
+  MCPW,
+  RIFF
+} IDENTIFIER <name="Identifier">; 
+
+struct {
+  UINT MN; // ??
+  UINT Size;
+  char VAW[4] <name="VAW signature">;
+  UINT MN;
+  UINT MN;
+  UINT FileCount;
+} HEADER <name="File Header">;
+
+typedef struct {
+  IDENTIFIER MCPW[4]; // 
+  UINT Length;  
+} FILETYPE <name="File">;
+typedef struct (int arraySize) {
+  FILETYPE array[arraySize];
+} FILETYPE_ARRAY;       
+FILETYPE_ARRAY FileTypes(HEADER.FileCount) <name="Types">;
+
+typedef struct {
+  UINT StartPos;
+  UINT DataStartPos; 
+  UINT DataSize;
+  IDENTIFIER RIFF[4]; //   
+} FILE_PROPERTIES <name="File">;
+typedef struct (int arraySize) {
+  FILE_PROPERTIES array[arraySize];
+} FILE_PROPERTIES_ARRAY;       
+FILE_PROPERTIES_ARRAY Properties(HEADER.FileCount) <name="FileProperties">;
