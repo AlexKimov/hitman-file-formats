@@ -1,0 +1,74 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: LGT.bt
+//   Authors: Alexandr Evdokimov
+//   Version: 0.01
+//   Purpose: Hitman Codename 47 LGT file
+//
+//   History: 
+//    
+//   2018.06 v 0.01 initial release 
+//
+//------------------------------------------------
+
+typedef enum <char> {
+  ABGR,
+  NLAP
+} IDENTIFIER <name="Identifier">; 
+
+struct {
+  char TGL[4] <name="TGL signature">;
+  UINT MN; // ??
+  UINT FileSize;
+  UINT Count;
+} HEADER <name="File Header">;
+
+
+while (true) {
+  struct {
+    IDENTIFIER Name[4];
+  } ID;
+  if (ID.Name == "ABGR") 
+  struct {  
+    struct {
+      UINT SectionSize;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT16 MN;
+      UINT16 MN;
+      BYTE J;
+    } HEADER;
+    struct {
+      BYTE A;
+      BYTE R;
+      BYTE G;
+      BYTE B;
+    } A[27940];
+  } ARGB;
+
+  if (ID.Name == "NLAP") 
+  struct {
+    struct {
+      UINT SectionSize;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+      UINT MN;
+    } HEADER;
+    BYTE T[253];
+    UINT Count; 
+    struct {
+      BYTE A;
+      BYTE R;
+      BYTE G;
+      BYTE B;
+    } Index[Count];
+  } NLAP;
+};

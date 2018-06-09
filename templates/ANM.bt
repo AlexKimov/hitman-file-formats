@@ -1,0 +1,56 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: ANM.bt
+//   Authors: Alexandr Evdokimov
+//   Version: 0.01
+//   Purpose: Hitman Codename 47 ANM file
+//
+//   History: 
+//    
+//   2018.06 v 0.01 initial release 
+//
+//------------------------------------------------ 
+
+struct {
+  UINT MN; // ??
+  UINT Size;
+  char TXD[4] <name="MNA signature">;
+  UINT MN;
+  UINT MN;
+} HEADER <name="File Header">;
+
+UINT CountN;
+struct {
+  UINT type;
+  UINT MN;
+  UINT Count;
+  if (type != 4)
+    UINT Count;
+  if (type == 10)
+    struct {
+      UINT MN1;
+      UINT MN2;
+    } Q[Count];
+  else
+    struct {
+      UINT MN1;
+    } Q[Count];   
+} E[CountN - 2] <optimize=false>;
+
+
+typedef struct {
+  UINT type;
+  char Name[4];
+  UINT Pos;
+  UINT Count;
+  //UINT Count;
+} ANIMATION <name=nameAnimation>;
+typedef struct (int arraySize) {
+  ANIMATION array[arraySize] <optimize=false>;
+} ANIMATION_ARRAY;       
+ANIMATION_ARRAY Animations(345) <name="Animations">;
+
+string nameAnimation(ANIMATION &animation) {
+  return animation.Name;
+};

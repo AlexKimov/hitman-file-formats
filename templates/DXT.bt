@@ -1,0 +1,43 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: PAL.bt
+//   Authors: Alexandr Evdokimov
+//   Version: 0.01
+//   Purpose: Hitman Codename 47 PAL file
+//
+//   History: 
+//    
+//   2018.06 v 0.01 initial release 
+//
+//------------------------------------------------ 
+
+struct {
+  UINT MN; // ??
+  UINT SectionSize;
+  char TXD[4] <name="TXD signature">;
+  UINT MN;
+  UINT MN;
+  UINT FileCount;
+} HEADER <name="File Header">;
+
+typedef struct {
+  char ID[4];
+  UINT FileSize;  
+} FILETYPE <name="File">;
+typedef struct (int arraySize) {
+  FILETYPE array[arraySize];
+} FILETYPE_ARRAY;       
+FILETYPE_ARRAY FileTypes(HEADER.FileCount) <name="Types">;
+
+typedef struct {
+  UINT Pos;
+  UINT DataStartPos; 
+  UINT DataSize;
+  UINT Index;  
+} FILE_PROPERTIES <name="File">;
+typedef struct (int arraySize) {
+  FILE_PROPERTIES array[arraySize];
+} FILE_PROPERTIES_ARRAY;       
+FILE_PROPERTIES_ARRAY Properties(HEADER.FileCount) <name="FileProperties">;
+
