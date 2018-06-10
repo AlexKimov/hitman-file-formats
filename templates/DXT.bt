@@ -24,11 +24,15 @@ struct {
 typedef struct {
   char ID[4];
   UINT FileSize;  
-} FILETYPE <name="File">;
+} FILETYPE <name=fileType>;
 typedef struct (int arraySize) {
   FILETYPE array[arraySize];
 } FILETYPE_ARRAY;       
 FILETYPE_ARRAY FileTypes(HEADER.FileCount) <name="Types">;
+
+string fileType(FILETYPE &file) {
+  return file.ID;
+};
 
 typedef struct {
   UINT Pos;
