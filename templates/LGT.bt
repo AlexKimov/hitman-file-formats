@@ -3,7 +3,7 @@
 //
 //      File: LGT.bt
 //   Authors: Alexandr Evdokimov
-//   Version: 0.01
+//   Version: 0.1
 //   Purpose: Hitman Codename 47 LGT file
 //
 //   History: 
@@ -11,6 +11,8 @@
 //   2018.06 v 0.01 initial release 
 //
 //------------------------------------------------
+
+local uint c = 0;
 
 typedef enum <char> {
   ABGR,
@@ -21,54 +23,77 @@ struct {
   char TGL[4] <name="TGL signature">;
   UINT MN; // ??
   UINT FileSize;
-  UINT Count;
+  UINT FileCount; // ?
 } HEADER <name="File Header">;
 
-
-while (true) {
+typedef struct {
   struct {
     IDENTIFIER Name[4];
   } ID;
-  if (ID.Name == "ABGR") 
-  struct {  
-    struct {
-      UINT SectionSize;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT16 MN;
-      UINT16 MN;
-      BYTE J;
-    } HEADER;
-    struct {
-      BYTE A;
-      BYTE R;
-      BYTE G;
-      BYTE B;
-    } A[27940];
-  } ARGB;
+  if (ID.Name == "ABGR") {
+    UINT SectionSize;
+    //FSeek(FTell() + (SectionSize - 8));
+    struct {  
+      struct {
+        UINT MN;
+        UINT16 Width;
+        UINT16 Height;
+        UINT MN;
+        UINT MN;
+        UINT16 MN;
+        UINT16 MN;
+        UINT16 MN;
+        UINT16 MN;
+        BYTE A;
+      } HEADER;
+      struct {
+        BYTE A;
+        BYTE B;
+        BYTE G;
+        BYTE R;
+      } A[HEADER.Width*HEADER.Height];
+    } ABGR;
+  };
 
-  if (ID.Name == "NLAP") 
+  if (ID.Name == "NLAP") { 
   struct {
     struct {
       UINT SectionSize;
+      UINT Index;
+      UINT16 Width;
+      UINT16 Height;
+      UINT Count;
       UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
-      UINT MN;
+      UINT16 MN;
+      UINT16 MN;
+      UINT16 MN;
+      UINT16 MN;
+      BYTE A;
     } HEADER;
-    BYTE T[253];
-    UINT Count; 
+         
+    typedef struct {
+      BYTE Index;
+    } INDEX;
+    typedef struct (int arraySize) {
+      INDEX array[arraySize];
+    } INDEX_ARRAY;       
+    INDEX_ARRAY Indexes(HEADER.Width*HEADER.Height) <name="Indexes">;
+
+    UINT Count;
     struct {
       BYTE A;
-      BYTE R;
-      BYTE G;
       BYTE B;
-    } Index[Count];
+      BYTE G;
+      BYTE R;
+    } PALETTE[Count];
   } NLAP;
+  };
+} FILE <optimize=false, name=fileType>;
+typedef struct (int arraySize) {
+  FILE array[arraySize] <optimize=false>;
+} FILE_ARRAY;       
+FILE_ARRAY Files(HEADER.FileCount) <name="Files">;
+
+string fileType(FILE &file) {
+  return file.ID.Name;
 };
