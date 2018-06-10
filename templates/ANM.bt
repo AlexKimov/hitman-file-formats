@@ -3,12 +3,12 @@
 //
 //      File: ANM.bt
 //   Authors: Alexandr Evdokimov
-//   Version: 0.01
+//   Version: 0.02
 //   Purpose: Hitman Codename 47 ANM file
 //
 //   History: 
 //    
-//   2018.06 v 0.01 initial release 
+//   2018.06 v 0.02 initial release 
 //
 //------------------------------------------------ 
 
@@ -21,13 +21,17 @@ struct {
 } HEADER <name="File Header">;
 
 UINT CountN;
-struct {
-  UINT type;
-  UINT MN;
+typedef struct {
+  UINT type1;
+  UINT type2;
+  if (type1 == 10 && type2 == 58) break;
+  if (type1 == 7 && type2 == 30308) break;
+  if (type1 == 8 && type2 == 13256) break;
+  if (type1 == 6 && type2 == 22993) break;
   UINT Count;
-  if (type != 4)
+  if (type1 != 4)
     UINT Count;
-  if (type == 10)
+  if (type1 == 10)
     struct {
       UINT MN1;
       UINT MN2;
@@ -35,21 +39,47 @@ struct {
   else
     struct {
       UINT MN1;
-    } Q[Count];   
-} E[CountN - 2] <optimize=false>;
+    } Q[Count];  
+} E;
+typedef struct (int arraySize) {
+  E array[arraySize] <optimize=false>;
+} E_ARRAY;       
+E_ARRAY Es(CountN - 2) <name="???">;
 
+
+//UINT type;
+if (type == 54) {
+
+};
 
 typedef struct {
   UINT type;
   char Name[4];
   UINT Pos;
-  UINT Count;
-  //UINT Count;
+  UINT Pos;
 } ANIMATION <name=nameAnimation>;
 typedef struct (int arraySize) {
   ANIMATION array[arraySize] <optimize=false>;
 } ANIMATION_ARRAY;       
-ANIMATION_ARRAY Animations(345) <name="Animations">;
+
+ANIMATION_ARRAY Animations1(133) <name="Animations">;
+ANIMATION_ARRAY Animations2(189) <name="Animations">;
+BYTE A1[96];
+ANIMATION_ARRAY Animations3(153) <name="Animations">;
+ANIMATION_ARRAY Animations4(142) <name="Animations">;
+BYTE A2[96];
+ANIMATION_ARRAY Animations5(193) <name="Animations">;
+ANIMATION_ARRAY Animations6(66) <name="Animations">;
+ANIMATION_ARRAY Animations7(65) <name="Animations">;
+
+ANIMATION_ARRAY Animations8(10) <name="Animations">;
+ANIMATION_ARRAY Animations9(2) <name="Animations">;
+ANIMATION_ARRAY Animations10(2) <name="Animations">;
+ANIMATION_ARRAY Animations11(3) <name="Animations">;
+
+ANIMATION_ARRAY Animations12(11) <name="Animations">;
+ANIMATION_ARRAY Animations13(7) <name="Animations">;
+ANIMATION_ARRAY Animations14(2) <name="Animations">;
 
 string nameAnimation(ANIMATION &animation) {
   return animation.Name;
