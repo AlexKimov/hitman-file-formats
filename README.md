@@ -2,7 +2,7 @@
 
 **Hitman Codename 47** (2000) binary files formats.
 
-| № | Format/Ext | Progress   | Template |  Description   |
+| № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
 | 1   | ANM/.anm |  [ANM](https://github.com/AlexKimov/hitman-file-formats/issues/2)    | [ANM.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/ANM.bt)    | Information about animations | 
 | 2   | DXT/.dxt |  [DXT](https://github.com/AlexKimov/hitman-file-formats/issues/3)   | [DXT.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/DXT.bt)    | Information about textures   | 
