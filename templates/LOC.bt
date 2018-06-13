@@ -1,0 +1,89 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+local uint i, k, pos, currentpos, length;
+
+typedef struct {
+  UINT Position;
+} POS <name="Key position">;
+
+typedef struct {
+   string Name;
+} KEY <name=keyName>;
+string keyName(KEY &key) {
+  return "Key: " + key.Name;
+};
+
+void KeysTree(uint count, uint keyPosition) {
+  POS Positions[count - 1] <name="Positions">;
+    pos = FTell(); 
+  i = 0; 
+  typedef struct (uint keyPos, uint count) {
+    KEY Key; 
+    UBYTE isTextExsist;
+    if (isTextExsist > 1) 
+       KeysTree(isTextExsist, pos + Positions[i].Position);  
+    else  
+      if (isTextExsist) {
+        typedef struct (uint keyPos, uint count) { 
+            //string Text;
+            if (i < count - 1)
+              length = Positions[i].Position - (sizeof(Key.Name) + 1);
+            else {
+              length = keyPos - FTell();               
+              Printf(Key.Name + "\n"); 
+            };    
+                     
+            char Text[length];  
+        } VALUE <optimize=false>; 
+        VALUE value(keyPos, count); 
+      };
+    ++i;    
+  } KEY_VALUE <name=KVName>;
+  typedef struct (uint arraysize, uint keyPos, uint count) {
+    KEY_VALUE arr(keyPos, count)[arraysize] <optimize=false>;
+  } KEYVALUE_ARRAY;
+  KEYVALUE_ARRAY KVarray(count, keyPosition, count) <name = "Keys, Values">;  
+} ;
+
+string KVName(KEY_VALUE &kv) {
+  if (exists(kv.Value))
+    return "Key: " + kv.Key.Name + " = Value:" + kv.Value.Text;
+  else
+    return "Key: " + kv.Key.Name;
+};
+ 
+
+BYTE isExist;
+
+string Name;
+BYTE SectionCount;
+UINT SectionPosition[SectionCount - 1];
+
+typedef struct {
+  string SectionName;
+  UBYTE KeysCount;
+  KeysTree(KeysCount, currentpos + SectionPosition[k]);
+  ++k;
+} SECTION <name=sectionName>;
+
+typedef struct (uint arraysize) {
+  SECTION arr[arraysize] <optimize=false>;
+} SECTION_ARRAY;
+
+currentpos = FTell();
+SECTION_ARRAY Sections(SectionCount) <name="Sections">;
+
+string sectionName(SECTION &section) {
+  return section.SectionName;
+};
