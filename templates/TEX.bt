@@ -1,0 +1,185 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+local uint i, height, width, count = 0;
+
+struct {
+  UINT DataSize;
+  UINT FileSize;
+  UINT C;
+  UINT D;
+} FILE_HEADER;
+
+
+//BitfieldDisablePadding(); 
+
+typedef struct {
+  struct {
+    UINT SectionSize;
+    CHAR ID1[4];
+    CHAR ID2[4];
+    UINT type;
+    UINT16 Width;
+    UINT16 Height;
+    UINT MMCount;
+    UINT Unknown;
+    UINT A;
+    UINT16 Unknown;
+    UINT16 Unknown;
+    string Name <name="TexureName">;
+  } HEADER;
+
+  UINT ImageDataSize <name="Image data size">;  
+
+  if (HEADER.ID1 == "1TXD" || HEADER.ID1 == "3TXD") { 
+    typedef struct {
+      if (HEADER.ID1 == "3TXD") {
+        struct {
+          for (i = 0; i < 16; ++i) {
+            ubyte AlphaIndex : 4 <name="Alpha Index">; 
+          };  
+        } ALPHA; 
+      };      
+      struct {
+        ubyte Red   : 5 <name="Red">; 
+        ubyte Green : 6 <name="Green">;
+        ubyte Blue  : 5 <name="Blue">; 
+       } COLOR1;     
+      struct {
+        ubyte Red   : 5 <name="Red">; 
+        ubyte Green : 6 <name="Green">;
+        ubyte Blue  : 5 <name="Blue">; 
+      } COLOR2;  
+      struct {
+        for (i = 0; i < 16; ++i) {
+        ubyte PixelIndex : 2 <name="Pixel Index">; 
+        };
+      } INDEX_TABLE;
+    } TEXEL <name="Texel", size=texelSize>; 
+    if (HEADER.Width == 512 && HEADER.Height == 512)
+      TEXEL Texels[16384];
+    else    
+     if (HEADER.Width == 512 && HEADER.Height == 256)
+      TEXEL Texels[8192];
+    else
+    if (HEADER.Width == 256 && HEADER.Height == 512)
+      TEXEL Texels[8192];
+    else
+    if ((HEADER.Width == 256 && HEADER.Height == 256) || (HEADER.Width == 512 && HEADER.Height == 128))  
+      TEXEL Texels[4096];
+    else
+      TEXEL Texels[HEADER.Width*HEADER.Height/16];
+  } else
+    if (HEADER.ID1 == "ABGR") {
+     typedef struct {
+       ubyte Red   <name="Red">;
+       ubyte Green <name="Green">;
+       ubyte Blue  <name="Blue">;
+       ubyte Alpha <name="Alpha">;     
+     } PIXEL <size=4>;
+     if (HEADER.Width == 256 && HEADER.Height == 512)
+       PIXEL Pixels[131072];
+     else
+     if ((HEADER.Width == 256 && HEADER.Height == 256) || (HEADER.Width == 512 && HEADER.Height == 128))
+       PIXEL Pixels[65536];
+     else
+       PIXEL Pixels[HEADER.Width*HEADER.Height];
+  } else {
+  
+     typedef struct {
+       UBYTE index;
+     } INDEX <size=1>;
+     INDEX Indexes[HEADER.Width*HEADER.Height];     
+
+     UINT Count;
+     typedef struct {
+       ubyte Blue  <name="Blue">;
+       ubyte Green <name="Green">;
+       ubyte Red   <name="Red">;
+       ubyte Alpha <name="Alpha">;     
+     } PALETTE <size=4>;
+
+     PALETTE Palette[Count];
+  };
+  
+  if (HEADER.MMCount > 1) {   
+    //height = HEADER.Height, width = HEADER.Width;
+    typedef  struct { 
+       UINT ImageDataSize <name="Image data size">;
+       // height = height/2; 
+       // width = width/2;
+       // if (ImageDataSize > 16) {
+       //      TEXEL Texels[height*width/16] <optimize=false>;      
+       //  } else 
+       //  if (ImageDataSize == 16)
+       //  {
+       //    if (HEADER.ID1 == "1TXD")
+       //     TEXEL Texels[2] <optimize=false>; 
+       //   else     
+       //     TEXEL Texel[1] <optimize=false>;  
+       // } else {
+       //   TEXEL Texel[1] <optimize=false>; 
+       // };
+       if ((HEADER.ID1 == "1TXD") || (HEADER.ID1 == "3TXD")) {  
+         if (HEADER.ID1 == "1TXD") 
+           count = ImageDataSize/8;
+         else
+           count = ImageDataSize/16;
+         if (ImageDataSize > 16) 
+           TEXEL Texel[count] <optimize=false>; 
+         else 
+           if (ImageDataSize == 16){
+             if (HEADER.ID1 == "1TXD")
+               TEXEL Texel[2] <optimize=false>;
+             else
+               TEXEL Texel[1] <optimize=false>;
+           } else 
+             TEXEL Texel[1] <optimize=false>; 
+        } else {        
+           PIXEL Pixels[ImageDataSize/4] <optimize=false>; 
+        };                
+    } MIP_MAP <name="MipMap">;
+    typedef struct (uint size) {
+      MIP_MAP array[size] <optimize=false>;
+    } MIP_MAP_ARRAY;
+    MIP_MAP_ARRAY MipMaps(HEADER.MMCount - 1) <name="MipMaps">;
+  };
+
+  if (HEADER.type == 190) {
+    UINT Count;
+    UINT A[Count];
+  }
+
+} FILE <name=textureName>;
+
+uint texelSize(TEXEL &texel) {
+  if (HEADER.ID1 == "1TXD")
+    return 8;
+  else
+    return 16;
+};
+
+string textureName (FILE &file) {
+  local string Type;
+  if (file.HEADER.ID1 == "ABGR")
+    return "RGBA: " + file.HEADER.Name;
+  else 
+    if (file.HEADER.ID1 == "NLAP")
+      return "Palette: " + file.HEADER.Name;
+    else
+      return "DXT: " + file.HEADER.Name;
+}
+
+count = 600;
+
+FILE file[count] <optimize=false>;
