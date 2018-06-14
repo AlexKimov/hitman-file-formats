@@ -20,6 +20,7 @@
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
 | 1   | LOC/.loc |  [LOC](https://github.com/AlexKimov/hitman-file-formats/issues/7)    | [LOC.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/LOC.bt)    | Localization file | 
+| 2   | TEX/.tex |  [TEX](https://github.com/AlexKimov/hitman-file-formats/issues/8)    | [TEX.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/TEX.bt)    | Textures archive | 
 
 
 
