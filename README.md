@@ -4,6 +4,8 @@
 
 **Hitman Codename 47** (2000) binary files formats.
 
+### 1
+
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
 | 1   | ANM/.anm |  [ANM](https://github.com/AlexKimov/hitman-file-formats/issues/2)    | [ANM.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/ANM.bt)    | Information about animations | 
@@ -21,6 +23,7 @@
 | :-- | :------- | :-- | :-- | :-- |
 | 1   | LOC/.loc |  [LOC](https://github.com/AlexKimov/hitman-file-formats/issues/7)    | [LOC.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/LOC.bt)    | Localization file | 
 | 2   | TEX/.tex |  [TEX](https://github.com/AlexKimov/hitman-file-formats/issues/8)    | [TEX.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/TEX.bt)    | Textures archive | 
+| 3   | SGP/.tex |  [SGP](https://github.com/AlexKimov/hitman-file-formats/issues/9)    | [SGP.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/SGP.bt)    |  | 
 
 
 
