@@ -1,0 +1,72 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: SGP.bt
+//   Authors: Alexandr Evdokimov
+//   Version: 0.01
+//   Purpose: Hitman 2 Silent Assasin SGP file
+//
+//   History: 
+//    
+//   2018.06 v 0.01 initial release 
+//
+//------------------------------------------------ 
+
+UINT Count1;
+UINT Count2;
+UINT Count3;
+UINT Count4;
+
+struct {
+  struct {
+   FLOAT X;
+   FLOAT Y;
+   FLOAT Z;
+   FLOAT Y;
+   FLOAT Z;
+  } A;
+
+  struct {
+   FLOAT X;
+   FLOAT Y;
+   FLOAT Z;
+  } A2[12];
+} Array1[Count1];
+
+struct {
+  UINT Index;
+  UINT Index;
+  FLOAT MN;
+} Array2[Count2];
+
+struct {
+  UINT Index;
+  UINT Pos;
+} Array3[Count3];
+
+struct {
+  UINT16 A; 
+  UINT16 B;  
+} Array4[Count4];
+
+typedef struct {
+  string FilePath;
+  UINT Index;
+} FILE <optimize=false>;
+
+local uint count = 476;
+
+FILE File[count] <name=groupName>;
+
+string groupName(FILE &file) {
+  local string s;
+  local int i, z = 0;
+  s = file.FilePath;
+  for ( z = 0; z <= 2; ++z ) {
+    i = Strchr(s, '\\');
+    s = StrDel(s, 0, i + 1);  
+  };
+  return s;
+};
+
+
