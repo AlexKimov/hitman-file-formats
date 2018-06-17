@@ -1,8 +1,8 @@
 # About
 
-## Hitman game series
-
 Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see how it goes now. Formats description will be there [Wiki](https://github.com/AlexKimov/hitman-file-formats/wiki).
+
+## Hitman game series
 
 ### 1
 
