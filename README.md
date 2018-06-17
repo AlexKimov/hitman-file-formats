@@ -2,9 +2,11 @@
 
 ## Hitman game series
 
-**Hitman Codename 47** (2000) binary files formats.
+Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see how it goes now. Formats description will be there [Wiki](https://github.com/AlexKimov/hitman-file-formats/wiki).
 
 ### 1
+
+**Hitman Codename 47** (2000) binary files formats.
 
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
