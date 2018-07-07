@@ -12,32 +12,151 @@
 //
 //------------------------------------------------
 
+local uint i, Pos1, Pos2, Count = 0;
+local uint bitmask = 0x00FFFFFF;
 
 typedef enum <char> {
   PSCR,
   PROT,
-  MPROT,
-  PCLPL,
+  PCLP,
   PVER,
   PFAC,
   PFTX,
   PUVC,
-  PPOSD,
-  APMTX8,
-  ÀPEXC,
+  POSD,
+  PMTX,
+  PEXC,
   PNAM,
-  PHEA
+  PHEA,
+  APFA,
+  PDAT,
+  PDBL,
+  ANDS,
+  WAVC,
+  SNDC,
+  SETC,
+  MTLS,
+  MMPS,
+  ROMS,
+  SNDR,
+  MATL,
+  MTLV,
+  PTXI,
+  PZFI,
+  DLCF,
 } IDENTIFIER <name="Identifier">; 
 
 // LittleEndian();
 // BigEndian();
 
+// --------------------------------------
+// File Header
+// --------------------------------------
+
 struct {
   char KPS[4] <name="KPS signature">;
   UINT MN; // ??
   UINT DataSize;
-  UINT Count;
+  UINT ChunkCount;
 } HEADER <name="File Header">;
+
+// --------------------------------------
+// Chunk Headers
+// --------------------------------------
+
+typedef struct {
+  IDENTIFIER ID[4];
+  UINT SectionSize;
+  local uint ChunkOffset = FTell(); // save position after Chunk Header
+  FSkip((SectionSize & bitmask) - 8); // skip chunk body
+} CHUNK_HEADER <name=getHeaderID>;
+
+typedef struct (uint size) {
+  CHUNK_HEADER array[size] <optimize=false>;
+} CHUNK_HEADERS;
+
+CHUNK_HEADERS CH(HEADER.ChunkCount) <name="Headers">;
+
+string getHeaderID(CHUNK_HEADER &CH) 
+{
+  return CH.ID;
+};
+
+// --------------------------------------
+// Node Tree
+// --------------------------------------
+
+typedef struct {
+  UINT Unknown;
+  UINT exc;
+  UINT NameOffset;
+
+  Pos2 = FTell();
+  FSeek(CH.array[10].ChunkOffset + NameOffset); // jump to PNAM chunk 
+  string Name; //
+  FSeek(Pos2); 
+   
+  UINT Unknown;
+  UINT Unknown;
+  UINT16 Unknown;  
+
+  UINT16 Size; 
+  if (Size == 32) {
+  	UINT VertexOffset;
+    UINT QuatsOffset;
+    UINT TextureOffset;
+    UINT FaceTextOffset;
+    UINT VertexCount; 	
+    UINT QuatsCount; 	
+    UINT TextureCount;    
+    UINT Unknown;
+    UINT Flags;
+  }; 
+} PHNODE;
+
+typedef struct {
+
+  UINT Offset;
+  Pos1 = FTell();
+  FSeek(CH.array[11].ChunkOffset + Offset & bitmask); // jump to PHEA chunk 
+  PHNODE PHNode;  
+  FSeek(Pos1); // get back to PROT chunk 
+   
+  UINT MN;
+  //
+  if ((MN >> 24) == 128) {
+    UINT SectionSize;
+    UINT ncount;
+ 	struct {
+	    PROTTree(1);
+	} SUB_NODES[ncount] <optimize=false>;
+  }; 
+
+} PRNODE <name=getNodeName>; 
+
+string getNodeName(PRNODE & Node) 
+{
+  return Node.PHNode.Name;
+};
+
+void PROTTree(uint NodeCount) {
+  PRNODE nodes[NodeCount] <optimize=false>;
+};
+
+struct {
+  FSeek(CH.array[1].ChunkOffset); // go to PROT chunk
+  UINT DataSize <name="PROT chunk size">;
+
+  UINT RootCount;
+  struct {
+    PROTTree(RootCount);
+  } TREE;
+  UINT Unknown;
+} NODE_TREE;
+
+// --------------------------------------
+// Script objects
+// --------------------------------------
 
 typedef struct {
   UINT type;
@@ -63,132 +182,139 @@ string objName(OBJECT &obj) {
 struct {
   struct {
     IDENTIFIER ID[4];
-    UINT ChunkSize;
+    UINT SectionSize;
     UINT DataSize;
   } HEADER;
-  FLOAT K; // 0.5
-  UINT Count; // scripts count
+
+  FSkip(HEADER.SectionSize - 12); 
+
+
+  //FLOAT K; // 0.5
+  //UINT ScriptCount; 
+
   //struct {
-    string ScriptFileName <bgcolor=cGreen>;
+  //  string ScriptFileName <bgcolor=cGreen>;
 
-    UINT Count;
-    typedef struct (int arraySize) {
-      OBJECT array[arraySize] <optimize=false>;
-    } OBJECT_Array;       
-    OBJECT_Array OBJECTs(Count) <name="Objects">;
+  //  UINT Count;
+  //  typedef struct (int arraySize) {
+  //    OBJECT array[arraySize] <optimize=false>;
+  //  } OBJECT_Array;       
+  //  OBJECT_Array OBJECTs(Count) <name="Objects">;
 
-    UINT A;
-    UINT B;
-    FLOAT L4; 
+  //  UINT SectionSize;
+  //  UINT Size;
+  //  FLOAT A; 
 
-    UINT MN; 
+  //  UINT Count; 
 
-    if (MN == 384) {
-      UINT MN; 
-      FLOAT MN;       
-      UINT16 MN; 
-      BYTE MN; 
-      FLOAT B;      
-    } else {
-      struct {
-        UINT MN; 
-        BYTE A;
-        UINT MN; 
-      } ssd[11];
-    };
- 
-    struct {
-      BYTE type;
-      if (type == 57) {
-        string s2;
-        string s3; 
-      } else 
-        if (type == 21) {
-          string s1;
-          BYTE B;
-          string s2;
-          string s3;   
-      };
-      UINT Count; 
-      if (Count == 0) {
+  //  BYTE RR[2];
+  //  UINT AO;    
+  //  BYTE type;  
+  //  string ObjName; 
+  //  string ObjPropertyName;  
+  //  UINT SectionSize;
 
-          UINT MN; 
-          BYTE A;
-          UINT16 MN; 
-          BYTE A;
-          BYTE B;
-          BYTE C;             
-        struct { 
-          UINT MN;
-          UINT MN; 
-          BYTE A;
-        } W1[4];
+  //  BYTE ABBBB;     
+  //  UINT Count;
 
-        struct {   
-          BYTE A; 
-          UINT16 A;
-          UINT MN;
-        } W2[2];  
+  //  struct {
+  //    UBYTE type; 
+  //    if (type == 0) {
+  //      BYTE A[2];
+  //      UBYTE type; 
+  //    } else
+  //    if (type != 57) {
+  //      UINT Count;  
+  //      BYTE type; 
+  //    };       
+  //    if (type == 57) {
+  //      string ObjName; 
+  //      string ObjMethodName;
+  //    } else {  
+  //      string EventName; 
+  //    }; 
+  //  } OBJECTS[Count] <optimize=false>;
 
-        struct { 
-          BYTE A; 
-          UINT MN; 
-          UINT MN; 
-        } W3[4];
-  
-          BYTE A; 
-          UINT16 A;
-          UINT MN;
+  // BYTE AAT[425];
 
-        
-          UINT MN;
-          BYTE A;
-          UINT MN;
+  // UINT A;
+  // UINT A;
+  // UINT A;
+  // UINT A;
+  // UINT A;
+  // UINT Count;
 
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          BYTE A;
-          UINT MN;
-          BYTE A;
-      };
-      if (Count == 1) {
-        UINT MN; 
-        BYTE A;
-        UINT MN; 
-        UINT16 MN; 
-        UINT MN;  
-        BYTE A;
-        UINT MN; 
-        BYTE M67[5]; 
-      };
-    } IW[10] <optimize=false>;
- 
- // } P[Count]; 
+  // struct {     
+  //   string EventName;
+  //   UINT A;
+  //   UINT A; 
+  // } U1[Count] <optimize=false>;
+
+  // UINT Count;
+  // struct {   
+  //   string Name;
+  //   UINT A;
+  //   UINT A; 
+  // } U2[14] <optimize=false>;
+  //} SCRIPT[ScriptCount] <optimize=false>;
+  //BYTE A; 
 } PSCR;
 
-struct {
-  IDENTIFIER ID[5];
-  UINT D;
-  UINT F;
-  UINT K;
-  UINT L;
-  UINT M;
-} MPROT;
+// --------------------------------------
+// Face Indexes
+// --------------------------------------
 
 struct {
-  IDENTIFIER ID[5];
-} PCLPL;
+  struct {
+    IDENTIFIER ID[4];
+    UINT SectionSize;
+  } HEADER;
+  
+  local uint faceindexcount;
+  faceindexcount = ((HEADER.SectionSize & SizeBitMask) - ChunkHeaderSize) / 2;
+  typedef struct {
+    UINT16 Index;  
+  } FACE;
+  FACE Faces[faceindexcount]; 
+} PFAC; // faces
 
 struct {
-  IDENTIFIER ID[4];
-} PVER;
+  struct {
+    IDENTIFIER ID[4];
+    UINT SectionSize;
+  } HEADER;
+  FSkip(HEADER.SectionSize - 8);    
+
+  //struct {
+  //  UINT B;
+  //  UINT E;
+  //  UINT Count;
+  //  struct {
+  //    UINT16 U;
+  //    UINT16 U;
+  //    UINT Index;
+  //    UINT V;
+  //  } MN0[Count];
+  //} MN01[3] <optimize=false>;
+
+} PFTX; 
+
+// -------------------
+// UV coordinates
+// -------------------
+
+struct {
+  struct {
+    IDENTIFIER ID[4];
+    UINT SectionSize;
+  } HEADER;
+
+  local uint UVCcount;
+  UVCcount = ((HEADER.SectionSize & SizeBitMask) - ChunkHeaderSize) / 4;
+  typedef struct {
+    FLOAT Coordinate;  
+  } UVC;
+  UVC UVCs[UVCcount]; 
+} PUVC; // UVC
+
+//break;
