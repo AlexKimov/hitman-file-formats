@@ -2,13 +2,13 @@
 
 Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see how it goes now. Formats description will be there [Wiki](https://github.com/AlexKimov/hitman-file-formats/wiki).
 
+#### Roadmap
+1. SPK format.
+2. Hitman 2 + Freedom Fighters formats. 
+
 ## Hitman game series
 
 **Hitman Codename 47** (2000) binary files formats.
-
-#### Roadmap
-1. SPK format.
-2. Hitman 2 + Freedome Fighters formats. 
 
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
