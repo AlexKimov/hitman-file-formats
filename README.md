@@ -6,6 +6,10 @@ Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see h
 
 **Hitman Codename 47** (2000) binary files formats.
 
+#### Roadmap
+1. SPK format.
+2. Hitman 2 + Freedome Fighters formats. 
+
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
 | 1   | ANM/.anm |  [ANM](https://github.com/AlexKimov/hitman-file-formats/issues/2)    | [ANM.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/ANM.bt)    | Information about animations | 
