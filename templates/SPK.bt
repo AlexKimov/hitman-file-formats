@@ -12,7 +12,7 @@
 //
 //------------------------------------------------
 
-local uint i, Pos1, Pos2, Count = 0;
+local uint i, Pos1, Pos2, Pos3, Count = 0;
 local uint bitmask = 0x00FFFFFF;
 
 typedef enum <char> {
@@ -75,7 +75,7 @@ typedef struct (uint size) {
   CHUNK_HEADER array[size] <optimize=false>;
 } CHUNK_HEADERS;
 
-CHUNK_HEADERS CH(HEADER.ChunkCount) <name="Headers">;
+CHUNK_HEADERS CH(HEADER.ChunkCount) <name="Chunk Headers">;
 
 string getHeaderID(CHUNK_HEADER &CH) 
 {
@@ -87,18 +87,101 @@ string getHeaderID(CHUNK_HEADER &CH)
 // --------------------------------------
 
 typedef struct {
-  UINT Unknown;
-  UINT exc;
+  UINT Count;
+  struct {
+     UINT A;
+     UINT B;
+     // local uint C = B >> 30;
+     switch (A)
+     {
+       case 1: 
+         {
+           UINT Unknown;
+           UINT A;
+           FSeek(4*A);
+           struct {         
+             DOUBLE A;
+             DOUBLE A;
+             DOUBLE A;
+              // 
+             struct {
+               DOUBLE X;
+               DOUBLE Y;
+               DOUBLE Z;
+               DOUBLE X;
+               DOUBLE Y;
+               DOUBLE Z;
+               DOUBLE X;
+               DOUBLE Y;
+               DOUBLE Z;
+            } MATRIX3X3; 
+           } S[A];
+         }; break; 
+       case 2: 
+         {
+	       struct {
+			  UINT16 A;						
+		   } S[(B - 8) / 2];					
+         }; break; 
+       case 3: 
+         {
+           UINT Unknown;
+           UINT A;
+
+         }; break; 
+       case 4: 
+         {
+           UINT Unknown;
+           UINT A;
+
+         }; break; 
+       case 5: 
+         {
+           UINT Unknown;
+           UINT A;
+
+         }; break; 
+     };   
+  } PROPERTIES[Count];  
+} PEXCNODE;
+
+typedef struct {
+  UINT SectionSize;
+  BYTE A;
+  string Name;
+  UINT A;
+  UINT A;
+  UINT A;
+
+    UINT A;
+    UINT A;
+    UINT16 A;
+    BYTE A;
+    BYTE A;
+
+
+} PDBLNODE;
+
+typedef struct {
+  UINT PDVLOffset;
+  UINT ExcOffset;
   UINT NameOffset;
 
   Pos2 = FTell();
   FSeek(CH.array[10].ChunkOffset + NameOffset); // jump to PNAM chunk 
   string Name; //
   FSeek(Pos2); 
-   
+
   UINT Unknown;
   UINT Unknown;
   UINT16 Unknown;  
+
+  if (PDVLOffset > 0) {
+    Pos2 = FTell();
+    FSeek(CH.array[13].ChunkOffset + PDVLOffset); // jump to PDBL chunk 
+    PDBLNODE PDBL; 
+    FSeek(Pos2); 
+  };
 
   UINT16 Size; 
   if (Size == 32) {
@@ -112,23 +195,31 @@ typedef struct {
     UINT Unknown;
     UINT Flags;
   }; 
+
+  if (ExcOffset > 0) {
+    Pos3 = FTell();
+    FSeek(CH.array[9].ChunkOffset + ExcOffset + 11);  // jump to PEXC chunk 
+    PEXCNODE pexc; 
+    FSeek(Pos3);
+  };
 } PHNODE;
 
 typedef struct {
 
-  UINT Offset;
+  UINT Offset <name="Offset(PHEA)">;
+
   Pos1 = FTell();
   FSeek(CH.array[11].ChunkOffset + Offset & bitmask); // jump to PHEA chunk 
   PHNODE PHNode;  
   FSeek(Pos1); // get back to PROT chunk 
    
-  UINT MN;
+  UINT ChunkSize;
   //
-  if ((MN >> 24) == 128) {
-    UINT SectionSize;
+  if (ChunkSize != 8) {
+    UINT DataSize;
     UINT ncount;
  	struct {
-	    PROTTree(1);
+	    Tree(1);
 	} SUB_NODES[ncount] <optimize=false>;
   }; 
 
@@ -139,21 +230,32 @@ string getNodeName(PRNODE & Node)
   return Node.PHNode.Name;
 };
 
-void PROTTree(uint NodeCount) {
+void Tree(uint NodeCount) {
   PRNODE nodes[NodeCount] <optimize=false>;
 };
 
+FSeek(CH.array[1].ChunkOffset); // go to PROT chunk position
 struct {
-  FSeek(CH.array[1].ChunkOffset); // go to PROT chunk
   UINT DataSize <name="PROT chunk size">;
-
   UINT RootCount;
   struct {
-    PROTTree(RootCount);
+    Tree(RootCount);
+  } TREE;
+  UINT Unknown;  
+} OBJECT_NODES <name="PROT Tree">;
+
+FSeek(CH.array[2].ChunkOffset); // go to PCLP chunk position 
+struct {
+  UINT DataSize <name="PCLP chunk size">;
+  UINT RootCount;
+  struct {
+    Tree(RootCount);
   } TREE;
   UINT Unknown;
-} NODE_TREE;
+} OBJECT_NODES <name="PCLP Tree">;
 
+break;
+ 
 // --------------------------------------
 // Script objects
 // --------------------------------------

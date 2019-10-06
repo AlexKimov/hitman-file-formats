@@ -51,7 +51,7 @@ typedef struct {
         BYTE B;
         BYTE G;
         BYTE R;
-      } A[HEADER.Width*HEADER.Height];
+      } PIXEL[HEADER.Width*HEADER.Height];
     } ABGR;
   };
 
