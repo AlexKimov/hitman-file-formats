@@ -2,6 +2,10 @@
 
 Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see how it goes now. Formats description will be there [Wiki](https://github.com/AlexKimov/hitman-file-formats/wiki).
 
+#### Roadmap
+1. SPK format.
+2. Hitman 2 + Freedom Fighters formats. 
+
 ## Hitman game series
 
 **Hitman Codename 47** (2000) binary files formats.
@@ -12,7 +16,7 @@ Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see h
 | 2   | DXT/.dxt |  [DXT](https://github.com/AlexKimov/hitman-file-formats/issues/3)   | [DXT.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/DXT.bt)    | Information about textures   | 
 | 3   | LGT/.lgt | [LGT](https://github.com/AlexKimov/hitman-file-formats/issues/1)   | [LGT.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/LGT.bt)    | Textures    | 
 | 4   | PAL/.pal |  [PAL](https://github.com/AlexKimov/hitman-file-formats/issues/4)    | [PAL.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/PAL.bt)    | Information about textures    | 
-| 5   | SPK/.spk |  [SPK](https://github.com/AlexKimov/hitman-file-formats/issues/6)    | [SPK.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/SPK.bt)    | Game archive: logic, scripting, 3d data and so on    | 
+| 5   | SPK/.spk |  [SPK](https://github.com/AlexKimov/hitman-file-formats/issues/6)    | [SPK.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/SPK.bt)    | Game archive: logic, scripting data, 3d data and so on    | 
 | 6   | WAV/.wav |  [WAV](https://github.com/AlexKimov/hitman-file-formats/issues/5)    | [WAV.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/WAV.bt)    | Information about sounds    | 
 
 **Hitman 2: Silent Assassin** (2002) binary files formats.
