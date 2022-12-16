@@ -6,9 +6,17 @@ Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see h
 1. SPK format.
 2. Hitman 2 + Freedom Fighters formats. 
 
-## Hitman game series
+## Formats list (wip)
 
-**Hitman Codename 47** (2000) binary files formats.
+| №     | Game | Platform | Year | File extensions |
+| :--- | :-- | :------ | :------ | :------ | 
+| 1 | Hitman Codename 47 | PC | 2000 | .spk | 
+| 2 | Hitman 2: Silent Assassin | PC | 2002 | .tex |
+| 3 | Frredom Fighters | PC | 2003 | .tex | 
+
+## Templates
+
+**Hitman Codename 47**
 
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
@@ -19,7 +27,7 @@ Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see h
 | 5   | SPK/.spk |  [SPK](https://github.com/AlexKimov/hitman-file-formats/issues/6)    | [SPK.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/SPK.bt)    | Game archive: logic, scripting data, 3d data and so on    | 
 | 6   | WAV/.wav |  [WAV](https://github.com/AlexKimov/hitman-file-formats/issues/5)    | [WAV.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/WAV.bt)    | Information about sounds    | 
 
-**Hitman 2: Silent Assassin** (2002) binary files formats.
+**Hitman 2: Silent Assassin**
 
 | № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
 | :-- | :------- | :-- | :-- | :-- |
@@ -27,6 +35,15 @@ Check [Issues](https://github.com/AlexKimov/hitman-file-formats/issues) to see h
 | 2   | TEX/.tex |  [TEX](https://github.com/AlexKimov/hitman-file-formats/issues/8)    | [TEX.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/TEX.bt)    | Textures archive | 
 | 3   | SGP/.sgp |  [SGP](https://github.com/AlexKimov/hitman-file-formats/issues/9)    | [SGP.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/SGP.bt)    |  | 
 
+**Freedom Fighters**
 
+| № | Format/Ext | Progress   | Template (010 Editor) |  Description   |
+| :-- | :------- | :-- | :-- | :-- |
+| 1 | TEX/.tex |  [TEX](https://github.com/AlexKimov/hitman-file-formats/issues/8)    | [TEX.bt](https://github.com/AlexKimov/hitman-file-formats/blob/master/templates/TEX.bt)    | Textures archive |
 
+## Tools
+
+**Noesis plugins**
+
+* [fmt_ioi_tex.py](https://github.com/AlexKimov/hitman-file-formats/blob/master/tools/scripts/noesis/fmt_ioi_tex.py) - open .rsb files
 
